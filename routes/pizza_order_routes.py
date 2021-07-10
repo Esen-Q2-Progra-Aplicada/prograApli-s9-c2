@@ -1,4 +1,5 @@
 from flask import render_template, request, redirect, session
+from logic.payment_logic import PaymentManager
 
 
 class PizzaOrderRoutes:
@@ -38,8 +39,11 @@ class PizzaOrderRoutes:
             elif request.method == "POST":
                 extraString = request.form.getlist("extra")
                 session["extra"] = extraString
-                return f"extra posted"
+                return redirect("payment")
 
         @app.route("/payment")
         def payment():
-            return render_template("payment.html")
+            payment = PaymentManager(session)
+            orderPriceList = payment.processPriceList()
+            print(orderPriceList)
+            return render_template("payment.html", orderPriceList=orderPriceList)
