@@ -37,6 +37,9 @@ class PizzaOrderRoutes:
                 return render_template("extra.html")
             elif request.method == "POST":
                 extraString = request.form.getlist("extra")
-                print(extraString)
                 session["extra"] = extraString
                 return f"extra posted"
+
+        @app.route("/payment")
+        def payment():
+            return render_template("payment.html")
